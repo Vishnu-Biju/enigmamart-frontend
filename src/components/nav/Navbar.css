@@ -4,20 +4,19 @@
 
 .naVbar {
   position:fixed ;
-  
-  display: flex;
   justify-content: center;
- 
-  background-color: transparent;
+  width: 10%;
+  background-color: var(--navBg) ;
   top: 0;
   margin-top: 50px;
   padding: 10px;
   margin-left: 0px;
   justify-content: start;
+  height: 100%;
+ 
 }
 
 .menu-bars {
-  margin-left: 2rem;
   background: none;
  
 }
@@ -25,15 +24,16 @@
 .nav-menu {
   
   background-color: var(--navBg);
-  width: 317.156;
+ 
   height: 100%;
-  display: flex;
   justify-content: center;
   position:fixed ;
-  margin-top: 50px;
+  margin-top: 47px;
+  padding-top: 10px;
   top: 0;
   left: -100%;
   transition: 850ms;
+  z-index: 666;
 }
 
 .nav-menu.active {

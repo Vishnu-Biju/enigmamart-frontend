@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
+import Badge from "@mui/material/Badge";
 import {
   AppstoreOutlined,
   SettingOutlined,
   LogoutOutlined,
   UserOutlined,
   UserAddOutlined,
+  ShoppingOutlined,
+  ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
@@ -13,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import Search from "../forms/Search";
 
 const { SubMenu, Item } = Menu;
 
@@ -22,7 +26,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   let dispatch = useDispatch();
-  let { user } = useSelector((state) => ({ ...state }));
+  let { user, cart } = useSelector((state) => ({ ...state }));
 
   const handleClick = (e) => {
     setCurrent(e.key);
@@ -47,44 +51,143 @@ const Header = () => {
 
   return (
     <Menu
-      style={{ display: "block", backgroundColor: "#3498ff ", color: "white" }}
+      style={{
+        display: "inline-block",
+        backgroundColor: "#f7f7f7",
+        color: "black",
+        position: "fixed",
+        width: "100%",
+        paddingTop: "10px",
+        overFlow: "hidden",
+      }}
       onClick={handleClick}
       mode="horizontal"
       selectedKeys={[current]}
     >
-      <Item  style={{  color: "white", backgroundColor: "#3498ff " }} 
-      key="home" icon={<AppstoreOutlined />}>
+      <Item
+        style={{
+          color: "#088178",
+          backgroundColor: "#f7f7f7",
+          fontWeight: "700",
+          fontSize: "16px",
+        }}
+        key="home"
+        icon={<AppstoreOutlined />}
+      >
         <Link to="/">Home </Link>
       </Item>
-      {user &&
+
+
+
+
+      {user && (
         <SubMenu
-        key="submenu"
-        style={{  color: "white",float: "right"  }}
-        icon={<SettingOutlined />}
-        title={user.email && user.email.split('@')[0]}
+          key="submenu"
+          style={{
+            color: "#088178",
+            float: "right",
+            fontWeight: "700",
+            fontSize: "16px",
+          }}
+          icon={<SettingOutlined />}
+          title={user.email && user.email.split("@")[0]}
+        >
+          {user && user.role === "subscriber" && (
+            <Item
+              key="setting:1"
+              style={{
+                color: "#088178",
+                backgroundColor: "#f7f7f7",
+                fontWeight: "700",
+                fontSize: "16px",
+                marginTop: "50px",
+              }}
+            >
+              <Link to="/user/history">Dashboard</Link>
+            </Item>
+          )}
+
+          {user && user.role === "admin" && (
+            <Item
+              key="setting:1"
+              style={{
+                color: "#088178",
+                backgroundColor: "#f7f7f7",
+                fontWeight: "700",
+                fontSize: "16px",
+              }}
+            >
+              <Link to="/admin/dashboard">Dashboard</Link>
+            </Item>
+          )}
+
+          <Item
+            icon={<LogoutOutlined />}
+            onClick={logout}
+            style={{
+              color: "#088178",
+              backgroundColor: "#f7f7f7",
+              fontWeight: "700",
+              fontSize: "16px",
+            }}
+          >
+            Logout
+          </Item>
+        </SubMenu>
+      )}
+
+
+
+      <Item
+        style={{
+          color: "#088178",
+          backgroundColor: "#f7f7f7",
+          fontWeight: "700",
+          fontSize: "16px",
+          
+        }}
+        key="shop"
+        icon={<ShoppingOutlined />}
       >
-        <Item
-          key="setting:1"
-          style={{ backgroundColor: "#3498ff ", color: "white" }}
-        >
-          Options 1
-        </Item>
-        <Item
-          key="setting:2"
-          style={{ backgroundColor: "#3498ff ", color: "white" }}
-        >
-          Options 2
-        </Item>
-        <Item
-          icon={<LogoutOutlined />}
-          onClick={logout}
-          style={{ backgroundColor: "#3498ff ", color: "white" }}
-        >
-          Logout
-        </Item>
-      </SubMenu>
-      }
+        <Link to="/shop">Shop </Link>
+      </Item>
+       
+
+      <Item
+        style={{
+          color: "#088178",
+          backgroundColor: "#f7f7f7",
+          fontWeight: "700",
+          fontSize: "16px",
+          float: "right",
+        }}
+        key="cart"
+        icon={<ShoppingCartOutlined />}
+      >
+        <Link to="/cart">
+          <Badge
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            badgeContent={cart.length}
+            color="secondary"
+            overlap="circular"
+          >
+            Cart
+          </Badge>
+        </Link>
+      </Item>
       
+      <Item
+        style={{
+          float: "right",
+        }}
+        key="search"
+        
+      >
+        <Search />
+      </Item>
 
       {!user && (
         <Item
