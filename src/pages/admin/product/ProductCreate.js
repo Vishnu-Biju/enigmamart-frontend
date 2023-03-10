@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { createProduct } from "../../../functions/product";
 import ProductCreateForm from "../../../components/forms/ProductCreateForm";
 import { getCategories, getCategorySubs } from "../../../functions/category";
@@ -29,6 +30,7 @@ const ProductCreate = () => {
   const [subOptions, setSubOptions] = useState([]);
   const [showSubs, setShowSub] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   //redux
   const { user } = useSelector((state) => ({ ...state }));
@@ -47,7 +49,7 @@ const ProductCreate = () => {
       .then((res) => {
         // console.log(res);
         window.alert(`"${res.data.title}" is created successfully`);
-        window.location.reload();
+        navigate("/admin/products");
       })
       .catch((err) => {
         console.log(err);
