@@ -58,7 +58,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
     // set url to images[] in the parent component state - ProductCreate
   };
 
-  const handleImageRemove = (public_id) => {
+const handleImageRemove = (public_id) => {
     setLoading(true);
     // console.log("remove image", public_id);
     axios
